@@ -1,0 +1,26 @@
+{
+  "name": "note-taking-app-back-end",
+  "version": "1.0.0",
+  "description": "Note-Taking App back-end",
+  "homepage": "https://github.com/zyz9066/note-taking-app-back-end#readme",
+  "bugs": {
+    "url": "https://github.com/zyz9066/note-taking-app-back-end/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zyz9066/note-taking-app-back-end.git"
+  },
+  "license": "ISC",
+  "author": "Tianye Zhao",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "nodemon app.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "mongoose": "^9.1.5",
+    "nodemon": "^3.1.11"
+  }
+}
