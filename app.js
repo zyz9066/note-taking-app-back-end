@@ -1,9 +1,7 @@
-require('dotenv').config();
-
 const express = require('express');
 
-const connectDB = require('./config/db');
-
+// Middleware imports
+const morgan = require('morgan');
 const cors = require('cors');
 const { auth, requiresAuth } = require('express-openid-connect');
 const swaggerUi = require('swagger-ui-express');
@@ -12,12 +10,18 @@ const swaggerJsdoc = require('swagger-jsdoc');
 const auth0Config = require('./config/auth0');
 const swaggerOptions = require('./config/swagger');
 
-const noteRoutes = require('./routes/note.route');
-const profileRoutes = require('./routes/profile.route');
+const noteRouter = require('./routes/noteRoutes');
+const userRouter = require('./routes/userRoutes');
 
 const app = express();
 
-// Essential middleware (CORS + JSON)
+// Middlewares
+if (process.env.NODE_ENV === 'development')
+{
+  // Logging
+  app.use(morgan('dev'));
+}
+
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -26,8 +30,8 @@ app.use(express.json());
 app.use(auth(auth0Config));
 
 // API Routes - all protected
-app.use('/api/v1/notes', requiresAuth(), noteRoutes);
-app.use('/api/v1/profile', requiresAuth(), profileRoutes);
+app.use('/api/v1/notes', requiresAuth(), noteRouter);
+app.use('/api/v1/users', requiresAuth(), userRouter);
 
 // Swagger API docs (protected - requires login)
 const specs = swaggerJsdoc(swaggerOptions);
@@ -38,11 +42,4 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', app: 'Note API backend', message: 'Note API backend is running!' });
 });
 
-// Database + Server start
-connectDB();
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Note API backend running on http://localhost:${PORT}`);
-  console.log(`Swagger docs: http://localhost:${PORT}/api-docs`);
-});
+module.exports = app;
