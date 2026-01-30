@@ -15,8 +15,7 @@
   "type": "commonjs",
   "main": "app.js",
   "scripts": {
-    "start:dev": "nodemon server.js",
-    "start:prod": "NODE_ENV=production nodemon server.js"
+    "start": "nodemon server.js"
   },
   "dependencies": {
     "dotenv": "^17.2.3",
@@ -24,7 +23,6 @@
     "mongoose": "^9.1.5"
   },
   "devDependencies": {
-    "morgan": "^1.10.1",
     "nodemon": "^3.1.11"
   }
 }

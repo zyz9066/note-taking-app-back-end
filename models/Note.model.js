@@ -2,9 +2,19 @@ const mongoose = require('mongoose');
 
 const noteSchema = new mongoose.Schema(
   {
-    user: { type: String, required: true },
-    title: { type: String, required: true },
-    content: { type: String, required: true },
+    userId: { 
+      type: String,
+      required: [true, 'User is required'],
+      unique: true,
+    },
+    title: { 
+      type: String,
+      required: [true, 'Title is required']
+    },
+    content: {
+      type: String,
+      required: [true, 'Content is required']
+    },
   },
   { timestamps: true }
 );

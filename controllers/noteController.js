@@ -72,6 +72,27 @@ exports.getNote = async (req, res) => {
   }
 };
 
+exports.replaceNote = async (req, res) => {
+  try {
+    const userId = req.oidc.user.sub;
+    const { title, content } = req.body;
+    const note = await Note.findOneAndReplace(
+      { _id: req.params.id, user: userId },
+      { user: userId, title, content },
+      { new: true, runValidators: true }
+    );
+    return res.status(200).json({
+      status: 'success',
+      data: { note }
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 'fail',
+      message: error.message
+    });
+  }
+};
+
 exports.updateNote = async (req, res) => {
   try {
     const userId = req.oidc.user.sub;
