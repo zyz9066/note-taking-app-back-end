@@ -11,14 +11,14 @@ const express = require('express');
 const app = express();
 
 // Middlewares
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Auth0 middleware (required for requiresAuth())
 // app.use(auth(auth0Config));
 
 // API Routes - all protected
-// app.use('/api/v1/notes', requiresAuth(), noteRouter);
+app.use('/api/v1/notes', noteRouter);
 // app.use('/api/v1/users', requiresAuth(), userRouter);
 
 // Health check endpoint (public)

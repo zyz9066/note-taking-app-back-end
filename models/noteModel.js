@@ -2,10 +2,9 @@ const mongoose = require('mongoose');
 
 const noteSchema = new mongoose.Schema(
   {
-    userId: { 
+    user: { 
       type: String,
-      required: [true, 'User is required'],
-      unique: true,
+      required: [true, 'User is required']
     },
     title: { 
       type: String,
@@ -14,7 +13,7 @@ const noteSchema = new mongoose.Schema(
     content: {
       type: String,
       required: [true, 'Content is required']
-    },
+    }
   },
   { timestamps: true }
 );

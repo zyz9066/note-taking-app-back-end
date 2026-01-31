@@ -1,7 +1,7 @@
 const express = require('express');
 const methodOverride = require('method-override');
 
-const userController = require('../controllers/user.controller');
+const userController = require('../controllers/userController');
 
 const router = express.Router();
 

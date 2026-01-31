@@ -1,73 +1,61 @@
-const Note = require('../models/Note.model');
-
-exports.checkID = async (req, res, next, val) => {
-  const userId = req.oidc.user.sub;
-  const note = await Note.findOne({ _id: val, user: userId });
-  if (!note) return res.status(404).json({
-    status: 'fail',
-    message: 'Invalid ID'
-  });
-  next();
-};
-
-exports.checkBody = (req, res, next) => {
-    if (!req.body.title || !req.body.content) {
-      return res.status(400).json({
-        status: 'fail',
-        message: 'Missing title or content'
-      });
-    }
-  next();
-};
+const Note = require('../models/noteModel');
 
 exports.getNotes = async (req, res) => {
   try {
-    const userId = req.oidc.user.sub;
-    const notes = await Note.find({ user: userId });
-    return res.status(200).json({ 
+    // const user = req.oidc.user.sub;
+    const user = req.body.user;
+    const notes = await Note.find({ user });
+
+    res.status(200).json({ 
       status: 'success',
-      data: { notes }
+      results: notes.length,
+      data: {
+        notes
+      }
     });
-  } catch (error) {
-    return res.status(500).json({ 
+  } catch (err) {
+    res.status(404).json({ 
       status: 'fail',
-      message: error.message
+      message: err.message
     });
   }
 };
 
 exports.createNote = async (req, res) => {
   try {
-    const userId = req.oidc.user.sub;
-    const newNote = await new Note({ user: userId, title, content }).save();
-    return res.status(201).json({
+    // const userID = req.oidc.user.sub;
+    const user = req.body.user;
+    const { title, content } = req.body;
+    const newNote = await Note.create({ user, title, content });
+
+    res.status(201).json({
       status: 'success',
-      data: { note: newNote }
+      data: {
+        note: newNote
+      }
     });
-  } catch (error) {
-    return res.status(500).json({
+  } catch (err) {
+    res.status(400).json({
       status: 'fail',
-      message: error.message
+      message: err.message
     });
   }
 };
 
 exports.getNote = async (req, res) => {
   try {
-    const userId = req.oidc.user.sub;
-    const note = await Note.findOne({ _id: req.params.id, user: userId });
-    if (!note) return res.status(404).json({
-      status: 'fail',
-      message: 'Note not found'
-    });
+    const note = await Note.findById(req.params.id);
+
     return res.status(200).json({
       status: 'success',
-      data: { note }
+      data: {
+        note
+      }
     });
-  } catch (error) {
-    return res.status(500).json({
+  } catch (err) {
+    return res.status(404).json({
       status: 'fail',
-      message: error.message
+      message: err.message
     });
   }
 };
