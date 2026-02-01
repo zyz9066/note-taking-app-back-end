@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(auth(auth0Config));
 
 // API Routes - all protected
-app.use('/api/v1/notes', requiresAuth(),noteRouter);
+app.use('/api/v1/notes', requiresAuth(), noteRouter);
 
 // Health check endpoint (public)
 app.get('/health', (req, res) => {
