@@ -64,8 +64,8 @@ exports.replaceNote = async (req, res) => {
   try {
     const userId = req.oidc.user.sub;
     const { title, content } = req.body;
-    const note = await Note.findOneAndReplace(
-      { _id: req.params.id, user: userId },
+    const note = await Note.findByIdAndReplace(
+      req.params.id,
       { user: userId, title, content },
       { new: true, runValidators: true }
     );
@@ -85,8 +85,8 @@ exports.updateNote = async (req, res) => {
   try {
     const userId = req.oidc.user.sub;
     const { title, content } = req.body;
-    const note = await Note.findOneAndUpdate(
-      { _id: req.params.id, user: userId },
+    const note = await Note.findByIdAndUpdate(
+      req.params.id,
       { title, content },
       { new: true, runValidators: true }
     );
@@ -105,13 +105,13 @@ exports.updateNote = async (req, res) => {
 exports.deleteNote = async (req, res) => {
   try {
     const userId = req.oidc.user.sub;
-    await Note.deleteOne({ _id: req.params.id, user: userId });
-    return res.status(204).json({
+    await Note.findByIdAndDelete(req.params.id);
+    res.status(204).json({
       status: 'success',
       data: null
     });
   } catch (error) {
-    return res.status(500).json({
+    res.status(500).json({
       status: 'fail',
       message: error.message
     });
