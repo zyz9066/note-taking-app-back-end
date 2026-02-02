@@ -8,8 +8,8 @@ connectDB();
 
 // Server start
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Note API backend running on http://localhost:${port}`);
+app.listen(port, "0.0.0.0", () => {
+  console.log(`Note API backend running on ${port}`);
 });
 
 process.on('SIGTERM', async () => {
